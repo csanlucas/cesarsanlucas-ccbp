@@ -10,3 +10,9 @@ export enum REPO_STATUS_TYPE {
     ACTIVE = 'A',
     INACTIVE = 'I'
 }
+
+export const STATE_API_LABEL = {
+    [REPO_STATE_TYPE.ARCHIVED]: 'Archivado',
+    [REPO_STATE_TYPE.DISABLE]: 'Deshabilitado',
+    [REPO_STATE_TYPE.ENABLE]: 'Habilitado'
+}

@@ -1,6 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToOne } from 'typeorm';
 
 import Tribe from './tribe.entity';
+import Metric from './metric.entity';
 import { NAME_ATTR_MAX_LENGTH, REPO_STATE_TYPE, REPO_STATUS_TYPE } from './constants';
 
 
@@ -23,6 +24,9 @@ class Repository {
 
     @ManyToOne(() => Tribe)
     public tribe: Tribe
+
+    @OneToOne(() => Metric, (metric) => metric.repository)
+    public metric: Metric
 }
 
 export default Repository;

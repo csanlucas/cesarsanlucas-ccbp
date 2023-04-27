@@ -8,7 +8,7 @@ class Metric {
     @PrimaryColumn()
     public id: number;
 
-    @OneToOne(() => Repository)
+    @OneToOne(() => Repository, (repository) => repository.metric)
     @JoinColumn({name: 'id'})
     public repository: Repository
 

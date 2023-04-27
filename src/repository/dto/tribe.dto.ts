@@ -1,7 +1,8 @@
-import { IsNumber } from 'class-validator';
+import { IsNumberString, IsNotEmpty } from 'class-validator';
 
 
 export class SelectTribeDto {
-    @IsNumber()
+    @IsNotEmpty()
+    @IsNumberString()
     tribeId: number;
 }
