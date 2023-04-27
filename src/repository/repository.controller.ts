@@ -5,7 +5,7 @@ import { map, firstValueFrom } from 'rxjs'
 import { RepositoryService } from './repository.service';
 import { TribeService } from './tribe.service';
 import { SelectTribeDto } from './dto/tribe.dto'
-import { STATE_API_LABEL, STATUS_API_LABEL } from './entities/constants';
+import { STATE_API_LABEL, STATUS_API_LABEL, MIN_REQUIRED_COVERAGE } from './entities/constants';
 
 @Controller('repositories')
 export class RepositoryController {
@@ -18,8 +18,13 @@ export class RepositoryController {
     @Get()
     async findRepoMetricsByTribe(@Query() query: SelectTribeDto) {
         const tribe = await this.tribeService.getTribeById(query.tribeId)
-        if (!tribe) throw new NotFoundException('La tribu no se encuentra registrada') // TODO RESUELVE TEST CASE 2 
-        const repositories = await this.repositoryService.getMetricsByTribe(tribe)
+        // RESUELVE Ejercicio 3 Escenario 2
+        if (!tribe) throw new NotFoundException('La tribu no se encuentra registrada')
+        const coverage = query.coverage ? query.coverage : MIN_REQUIRED_COVERAGE
+        const repoRequiredCoverage = await this.repositoryService.atLeastRepositoryByRequiredCoverage(tribe, coverage)
+        // RESUELVE Ejercicio 3 Escenario 4
+        if (!repoRequiredCoverage) throw new NotFoundException('La tribu no tiene repositorios que cumplan con la cobertura necesaria')
+        const repositories = await this.repositoryService.getMetricsByTribe(tribe, query.state, query.create_time_gt, coverage)
         let mockRepoStatusRes = []
         try {
             mockRepoStatusRes = await firstValueFrom(

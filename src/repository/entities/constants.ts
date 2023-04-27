@@ -1,5 +1,7 @@
 export const NAME_ATTR_MAX_LENGTH = 50;
 
+export const MIN_REQUIRED_COVERAGE = 75;
+
 export enum REPO_STATE_TYPE {
     ENABLE = 'E',
     DISABLE = 'D',
