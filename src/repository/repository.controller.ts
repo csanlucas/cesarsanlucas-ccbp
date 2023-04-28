@@ -1,6 +1,10 @@
-import { Controller, Get, NotFoundException, Query} from '@nestjs/common';
+import { Controller, Get, NotFoundException, Query, Header, StreamableFile } from '@nestjs/common';
+import { createReadStream } from 'fs';
 import { HttpService } from '@nestjs/axios';
 import { map, firstValueFrom } from 'rxjs'
+import { join } from 'path'
+import { writeFileSync } from 'fs'
+import { stringify } from 'csv-stringify/sync';
 
 import { RepositoryService } from './repository.service';
 import { TribeService } from './tribe.service';
@@ -50,5 +54,18 @@ export class RepositoryController {
             }
         })
         return {repositories: results}
+    }
+
+    @Get('/export/')
+    @Header('Content-Type', 'application/json')
+    @Header('Content-Disposition', 'attachment; filename="repositoriesMetrics.csv"')
+    async exportRepoMetricsByTribe(@Query() query: SelectTribeDto) {
+        const reposMetricsByTribe = await this.findRepoMetricsByTribe(query)
+        if (reposMetricsByTribe.repositories.length == 0) throw new NotFoundException('No se tiene métricas de repositorios para la tribu consultada')
+        const jsonParsed = stringify(reposMetricsByTribe.repositories, {header: true})
+        // TODO almacenar archivo exportado to S3 o similares
+        writeFileSync('repositoriesMetrics.csv', jsonParsed)
+        const file = createReadStream(join(process.cwd(), 'repositoriesMetrics.csv'));
+        return new StreamableFile(file);
     }
 }
