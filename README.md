@@ -16,7 +16,7 @@
 * Pruebas unitarias por comportamientos.
 * Formato de respuesta requerida.
 * Uso correcto de enumerados y constantes.
-### Objetico 4
+### Objetivo 4
 * Generar reporte en csv a través de un endpoint.
 ---
 
