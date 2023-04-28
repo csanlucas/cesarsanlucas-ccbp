@@ -115,5 +115,13 @@ Se deben realizar los request a los endpoints haciendo uso de algún cliente de 
     ```json
         {"statusCode":404,"message":"La tribu no tiene repositorios que cumplan con la cobertura necesaria","error":"Not Found"}
     ```
-
+**URL**  : http://localhost:3000/repositories/export/
+* **Query_Params** `tribeId: number (Required); state: string; coverage: number; create_time_gt: Isoformatdate`
+* **Success Response:**
+    * **Code** 200 <br/>
+    **Content** 
+    ```json
+        [ARCHIVO_DESCARGADO.csv]
+    ```
+* **Error handling & Response** `[Errores similares a los presentes http://localhost:3000/repositories/]`
 ---
